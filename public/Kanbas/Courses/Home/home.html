@@ -416,9 +416,7 @@
         </li>
         <li>
             <a href="/Kanbas/Help/index.html">
-                <i class="fa fa-question-circle" aria-hidden="true"></i>
-                <br />
-                Help
+                <i class="fa fa-question-circle" aria-hidden="true"></i> Help
             </a>
         </li>
         </ul>
@@ -430,7 +428,56 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/90ba9d8fb8.js" crossorigin="anonymous"></script>
     <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
+        <script>
+            
+            const navEl = document.querySelector('.mobile-kanbass-navigation');
+            const courseNav = document.querySelector('.mobile-course-navigation');
+
+            const navHamburger = document.querySelector(".fa-bars-in-nav");
+    
+            navHamburger.addEventListener('click', ()=> {        
+                navEl.classList.add('open-nav');
+                document.body.style.overflowY = "hidden";
+            });
+
+            const mobileKanbassNavigationCross = document.querySelector('.mobile-kanbass-navigation .fa-times');
+            
+
+            mobileKanbassNavigationCross.addEventListener('click', ()=> {          
+                navEl.classList.remove('open-nav');
+                document.body.style.overflowY = "auto";
+            });
+
+            const chevronNav = document.querySelector(".fa-chevron-mobile-nav");
+
+            
+
+    
+            document.addEventListener('DOMContentLoaded', () => {
+                const courseNavToggleIcon = document.querySelector(".course-nav-toggle-icon");
+                let isOpen = false;
+                courseNav.classList.remove('open-nav');
+                document.body.style.overflowY = "auto";
+                courseNavToggleIcon.addEventListener('click', () => {
+                    if (isOpen) {
+                        courseNavToggleIcon.classList.remove('fa', 'fa-times');
+                        courseNavToggleIcon.classList.add('fas', 'fa-chevron-down');
+                        courseNav.classList.remove('open-nav');
+                        document.body.style.overflowY = "auto";
+                    } else {
+                        courseNavToggleIcon.classList.remove('fas', 'fa-chevron-down');
+                        courseNavToggleIcon.classList.add('fa', 'fa-times');
+                        courseNav.classList.add('open-nav');
+                        document.body.style.overflowY = "hidden";
+                    }
+                    isOpen = !isOpen;
+                });
+
+            });
+        </script>
 </body>
 
 </html>

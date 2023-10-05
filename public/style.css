@@ -614,3 +614,34 @@ ul.contact h3 {
 .mobile_rightIcon i {
   color: #fff;
 }
+.mobile-kanbass-navigation{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background-color: white;
+  height: 100%;
+  transform: translateX(-100%);
+  transition: all 0.3s ease-in-out;
+}
+.open-nav{
+  transform: translateX(0) !important;
+}
+.mobile-kanbass-navigation nav{
+  position: relative;
+}
+.mobile-kanbass-navigation nav .fa.fa-times,.mobile-course-navigation .fa-times{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 15px;
+  font-size: 20px;
+}
+.mobile-course-navigation{
+  width: 100%;
+  position: absolute;
+  top: 100px;
+  background-color: white;
+  height: 100%;
+  transform: translateX(-100%);
+  transition: all 0.3s ease-in-out;
+}
