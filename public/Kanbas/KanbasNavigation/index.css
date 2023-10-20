@@ -1,3 +1,4 @@
+
 .wd-kanbas-navigation{
     background-color: black;    
     list-style: none;
@@ -20,17 +21,21 @@
     color:grey !important;
 }
 .wd-kanbas-navigation li.wd-active a{
-    color:red;
+    color:yellow;
 }
 .wd-kanbas-navigation a{
     color:white;
     text-decoration: none;
 }
 .wd-kanbas-navigation a i{
-    color:red;
+    color:yellow;
     font-size: 2em;
     margin-bottom: 5px;
 }
 .inbox-icon{
     font-size: 3em !important;
+}
+.list-group-item-2{
+    color: pink;
+
 }

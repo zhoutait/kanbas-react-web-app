@@ -1,14 +1,16 @@
-import JsonPre from ". /JsonPre";
+import JsonPre from "./JsonPre";
 
-    function JsonStringify() {
-    const squares = [1, 4, 16, 25, 36];
-    console. log(squares);
-    return ( 
+function JsonStringify() {
+  const squares = [1, 4, 16, 25, 36];
+  console.log(squares);
+  return (
     <div>
-         <h4>JsonStringify</h4>
-        squares = {JSON.strinaifv(squares) }
-         <br /> 
-         <JsonPre json = { squares } />
-    </div>);
-ß }
+      <h4>JsonStringify</h4>
+      squares = {JSON.stringify(squares)}
+      <br />
+      <JsonPre json={squares} />
+    </div>
+  );
+}
+
 export default JsonStringify;
