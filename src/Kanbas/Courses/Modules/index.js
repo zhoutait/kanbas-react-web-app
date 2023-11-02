@@ -1,11 +1,28 @@
 import ModuleList from "./ModuleList";
+
 import { Link, useParams } from "react-router-dom";
 import db from "../../Database";
 import CourseNavigation from "../CourseNavigation";
 
-function Modules() {
-  const modules = db.Modules;
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  addModule,
+  deleteModule,
+  updateModule,
+  setModule,
+} from "./modulesReducer";
+
+function Modules(props) {
+  const { courseId } = useParams();
+
+  const modules = useSelector((state) => state.modulesReducer.modules);
+  const module = useSelector((state) => state.modulesReducer.module);
+  const dispatch = useDispatch();
+
   const params = useParams();
+
+  console.log(modules);
   return (
     <div className="container">
       <div class="col-12 breadcrumb-col">
@@ -98,7 +115,7 @@ function Modules() {
                           {
                             db.Courses.filter(
                               (item) => item._id == params.courseId
-                            )[0].name
+                            ).name
                           }{" "}
                           Modules{" "}
                         </h3>
@@ -117,27 +134,106 @@ function Modules() {
                         </div>
                       </li>
 
-                      {modules
-                        .filter((item) => item.course == params.courseId)
-                        .map((module) => {
-                          return (
-                            <li className="list-group-item  pl-10px">
-                              <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
-                              <i className="fa-solid fa-ellipsis-vertical ml--5px mr-5px"></i>
-                              <Link
-                                to={`/Kanbas/Courses/${params.courseId}/assignment`}
-                                className="assignments-list-heading"
+                      {/* Create Module  */}
+                      <div className="CRUDContainer border p-2">
+                        <form>
+                          <div className="form-group border d-flex p-2 ">
+                            <div>
+                              <input
+                                className="m-2"
+                                value={module.name}
+                                onChange={(e) =>
+                                  dispatch(
+                                    setModule({
+                                      ...module,
+                                      name: e.target.value,
+                                    })
+                                  )
+                                }
+                              />
+                              <br />
+                              <textarea
+                                className="m-2"
+                                value={module.description}
+                                onChange={(e) =>
+                                  dispatch(
+                                    setModule({
+                                      ...module,
+                                      description: e.target.value,
+                                    })
+                                  )
+                                }
+                              />
+                            </div>
+
+                            <div className="buttons align-items-start">
+                              <button
+                                type="button"
+                                class="btn btn-success "
+                                onClick={() =>
+                                  dispatch(
+                                    addModule({ ...module, course: courseId })
+                                  )
+                                }
                               >
-                                {module.name}
-                              </Link>
-                              <i
-                                className="fa fa-ellipsis-v float-end mt-4px"
-                                aria-hidden="true"
-                              ></i>
-                              <i className="fa-solid fa-circle-check mr-20px float-end mt-4px"></i>
-                            </li>
-                          );
-                        })}
+                                Add
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                onClick={() => dispatch(updateModule(module))}
+                              >
+                                Update
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                        <div>
+                          {modules
+                            .filter((item) => item.course == params.courseId)
+                            .map((module) => {
+                              return (
+                                <li className="list-group-item  pl-10px">
+                                  <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
+                                  <i className="fa-solid fa-ellipsis-vertical ml--5px mr-5px"></i>
+                                  <Link
+                                    to={`/Kanbas/Courses/${params.courseId}/assignment`}
+                                    className="assignments-list-heading"
+                                  >
+                                    {module.name}
+                                  </Link>
+                                  <p>{module.description}</p>
+                                  <p>{module._id}</p>
+                                  <div className="buttons ">
+                                    <button
+                                      className="btn btn-success"
+                                      onClick={() =>
+                                        dispatch(setModule(module))
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      class="btn btn-danger"
+                                      onClick={() =>
+                                        dispatch(deleteModule(module._id))
+                                      }
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                  {/* <i
+																		className="fa fa-ellipsis-v float-end mt-4px"
+																		aria-hidden="true"
+																	></i>
+																	<i className="fa-solid fa-circle-check mr-20px float-end mt-4px"></i> */}
+                                </li>
+                              );
+                            })}
+                        </div>
+                      </div>
                     </ul>
                   </div>
                   <div className="col-lg-3 d-lg-block d-none mb-50px">

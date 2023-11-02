@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import db from "../../Database";
-function Home() {
-  const courses = db.Courses;
+function Home(props) {
+  const courses = props.courses;
+  console.log(props.courses);
   return (
     <>
       <div className="row">
@@ -70,7 +71,10 @@ function Home() {
                 <div className="row">
                   <div className="col-lg-9 col-12">
                     <ul className="list-group assignments-list">
-                      <li className="list-group-item list-group-item-secondary d-flex justify-content-between">
+                      <li
+                        className="list-group-item list-group-item-secondary d-flex justify-content-between"
+                        // style="border: none;"
+                      >
                         <h3 className="home-list-heading mt-10px">
                           <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
                           <i className="fa-solid fa-ellipsis-vertical mr-5px"></i>{" "}
@@ -91,8 +95,7 @@ function Home() {
                         </div>
                       </li>
 
-                      {courses.map((course) => {
-                        console.log(course);
+                      {courses.toReversed().map((course) => {
                         return (
                           <li className="list-group-item  pl-10px">
                             <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
@@ -120,7 +123,11 @@ function Home() {
                       role="group"
                       aria-label="Basic mixed styles example"
                     >
-                      <button type="button" className="btn btn-light">
+                      <button
+                        type="button"
+                        className="btn btn-light"
+                        // style="border-radius:0;"
+                      >
                         <i className="fa fa-ban mr-5px" aria-hidden="true"></i>
                         Unpublish
                       </button>

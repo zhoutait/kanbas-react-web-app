@@ -1,15 +1,37 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import db from "../../Database";
 import CourseNavigation from "../CourseNavigation";
-import Database from "../../Database";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAssignment, setAssignment } from "./assignmentsReducer";
 function Assignments({ type }) {
+  const [open, setOpen] = useState(false);
+  const [assignId, setAssignId] = useState();
+  const onOpenModal = (id) => {
+    setAssignId(id);
+    setOpen(true);
+  };
+  const onCloseModal = () => setOpen(false);
+
+  const Navigate = useNavigate();
+  const params = useParams();
   const { courseId } = useParams();
-  const assignments = db.Assignments;
-  const courseAssignments = !type
+  const { assignmentId } = useParams();
+  const dispatch = useDispatch();
+  // const assignments = db.Assignments;
+  const assignments = useSelector(
+    (state) => state.assignmentReducer.assignments
+  );
+  const assignment = useSelector((state) => state.assignmentReducer.assignment);
+  // console.log(courseAssignments)
+
+  const courseAssignments = type
     ? assignments.filter((assignment) => assignment.course === courseId)
     : assignments;
-  console.log(courseAssignments);
+  console.log(assignments);
 
   return (
     <>
@@ -66,9 +88,14 @@ function Assignments({ type }) {
                   aria-hidden="true"
                 ></i>
               </button>
-              <button type="button" className="btn btn-danger float-end mr-5px">
-                <i className="fa fa-plus" aria-hidden="true"></i> Assignment
-              </button>
+              <Link to={`/Kanbas/Courses/AssignmentAdd/${params.courseId}`}>
+                <button
+                  type="button"
+                  className="btn btn-danger float-end mr-5px"
+                >
+                  <i className="fa fa-plus" aria-hidden="true"></i>Assignment
+                </button>
+              </Link>
               <button
                 type="button"
                 className="btn btn-light btn-outline-dark float-end mr-5px"
@@ -101,7 +128,7 @@ function Assignments({ type }) {
           </div>
           <div className="container">
             <ul className="r_distanceB list-group assignments-list">
-              {/* {courseAssignments.map((assignment) => ( */}
+              {console.log(courseAssignments)}
               {courseAssignments.map((assignment) => (
                 <li className=" list-group-item d-flex justify-content-between">
                   <div className="assignments-list-single-left-content d-flex">
@@ -125,14 +152,63 @@ function Assignments({ type }) {
                     </div>
                   </div>
                   <div className="d-flex align-items-center">
-                    <i
-                      className="fa-solid fa-circle-check mr-20px float-end"
-                      style={{ color: "#2db93d" }}
-                    ></i>
-                    <i
-                      className="fa fa-ellipsis-v float-end"
-                      aria-hidden="true"
-                    ></i>
+                    {/* <i
+											className="fa-solid fa-circle-check mr-20px float-end"
+											style={{ color: "#2db93d" }}
+										></i>
+										<i
+											className="fa fa-ellipsis-v float-end"
+											aria-hidden="true"
+										></i> */}
+                    <div className="buttons align-items-start">
+                      {/* <Link
+												key={assignment._id}
+												to={`/Kanbas/Courses/Assignments/${assignment._id}/${assignment.course}`}
+												className="list-group-item"
+											> */}
+                      <button
+                        type="button"
+                        class="btn btn-success "
+                        onClick={() => {
+                          Navigate(
+                            `/Kanbas/Courses/Assignments/${assignment._id}/${assignment.course}`
+                          );
+                        }}
+                      >
+                        Edit
+                      </button>
+                      {/* </Link> */}
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        onClick={() => {
+                          // dispatch(setAssignment(assignment));
+                          onOpenModal(assignment._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                      <Modal open={open} onClose={onCloseModal} center>
+                        <h2>Are You Sure Want to Delete</h2>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          onClick={() => onCloseModal()}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          onClick={() => {
+                            dispatch(deleteAssignment(assignId));
+                            onCloseModal();
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </Modal>
+                    </div>
                   </div>
                 </li>
               ))}

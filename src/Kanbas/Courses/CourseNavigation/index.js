@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, NavLink } from "react-router-dom";
 import "./index.css";
 
 function CourseNavigation() {
@@ -14,6 +14,7 @@ function CourseNavigation() {
   ];
   const { courseId } = useParams();
   const { pathname } = useLocation();
+
   return (
     <>
       <div className="col-lg-11" style={{ width: "18%" }}>

@@ -648,3 +648,27 @@ ul.contact h3 {
   transform: translateX(-100%);
   transition: all 0.3s ease-in-out;
 }
+
+.CRUDContainer {
+  display: flex;
+  flex-direction: column;
+
+  width: fit-content;
+  gap: 10px;
+
+}
+.CRUDContainer 
+.crud-action{
+
+}
+.CRUDContainer > form > div{
+  gap: 50px;
+}
+.crud-action >div{
+  justify-content: space-between;
+  
+}
+.CRUDContainer .buttons{
+  display: flex;
+  gap: 10px;
+}

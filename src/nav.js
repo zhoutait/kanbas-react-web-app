@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
+
 function Nav() {
+  const { pathname } = useLocation();
   <nav className="nav nav-tabs mt-2">
     <Link
       to="/Labs/a3"
@@ -21,7 +23,7 @@ function Nav() {
     </Link>
   </nav>;
   return (
-    <nav className="nav nav-tabs mt-2">
+    <nav className="nav nav-tabs mt-2 ">
       <Link
         to="/Labs/a3"
         className={`nav-link ${pathname.includes("a3") ? "active" : ""}`}

@@ -15,13 +15,11 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/AssignmentEditor";
 import Grades from "./Grades";
 
-function Courses() {
+function Courses(props) {
   const { courseId } = useParams();
   const { pathname } = useLocation();
   const [empty, kanbas, courses, id, screen] = pathname.split("/");
-  const course = db.Courses.filter((course) => course._id === courseId);
 
-  console.log(course);
   return (
     <>
       <div class="col-12 breadcrumb-col">
@@ -52,7 +50,12 @@ function Courses() {
             }}
           >
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route
+                path="/"
+                element={
+                  <Home courses={props.courses} setCourses={props.setCourses} />
+                }
+              />
               <Route path="Home" element={<Home />} />
               <Route path="Modules" element={<Modules />} />
               <Route path="Assignments" element={<Assignments />} />
