@@ -5,6 +5,7 @@ import CourseNavigation from "../CourseNavigation";
 function AssignmentAddEditor() {
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
+  // const [isLoading, setisLoading] = useState(false);
   const [assignment, setAssignment] = useState({
     point: "",
     due: "",
@@ -28,7 +29,10 @@ function AssignmentAddEditor() {
   };
 
   useEffect(() => {
-    fetchCourse();
+    async function handleFetchCourse() {
+      await fetchCourse();
+    }
+    handleFetchCourse();
   }, [courseId]);
 
   const handleInputChange = (field, value) => {
