@@ -63,7 +63,7 @@ function Dashboard() {
 
       if (response.ok) {
         // Successful deletion, fetch courses again
-        fetchCourses();
+        await fetchCourses();
       } else {
         console.error("Failed to delete course");
       }
@@ -91,7 +91,7 @@ function Dashboard() {
 
       if (response.ok) {
         // Successful update, fetch courses again
-        fetchCourses();
+        await fetchCourses();
         setCourse({
           name: "New Course",
           number: "New Number",

@@ -26,7 +26,7 @@ function Courses() {
 
   useEffect(() => {
     fetchCourse();
-  }, []);
+  }, [courseId]);
 
   return (
     <>
