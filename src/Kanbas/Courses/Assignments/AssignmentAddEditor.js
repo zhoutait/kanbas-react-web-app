@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CourseNavigation from "../CourseNavigation";
 
-function AssignmentEditor() {
-  const { assignmentId } = useParams();
+function AssignmentAddEditor() {
+  const { courseId } = useParams();
+  const [course, setCourse] = useState(null);
   const [assignment, setAssignment] = useState({
     point: "",
     due: "",
@@ -14,22 +15,21 @@ function AssignmentEditor() {
   });
   const navigate = useNavigate();
 
-  // Fetch single assignment by assignmentId
-  const fetchAssignment = async () => {
+  const fetchCourse = async () => {
     try {
       const response = await fetch(
-        `https://kanbas-node-server-app-zinh.onrender.com/api/assignments/${assignmentId}`
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}`
       );
       const data = await response.json();
-      setAssignment(data);
+      setCourse(data);
     } catch (error) {
-      console.error("Error fetching assignment:", error);
+      console.error("Error fetching course:", error);
     }
   };
 
   useEffect(() => {
-    fetchAssignment();
-  }, [assignmentId]);
+    fetchCourse();
+  }, [courseId]);
 
   const handleInputChange = (field, value) => {
     setAssignment((prevAssignment) => ({
@@ -38,27 +38,30 @@ function AssignmentEditor() {
     }));
   };
 
-  const updateAssignment = async () => {
+  const addAssignment = async () => {
     try {
       const response = await fetch(
-        `https://kanbas-node-server-app-zinh.onrender.com/api/assignments/${assignmentId}`,
+        `https://kanbas-node-server-app-zinh.onrender.com/api/assignments`,
         {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(assignment),
+          body: JSON.stringify({
+            ...assignment,
+            course: courseId,
+          }),
         }
       );
 
       if (response.ok) {
         // Successful update, you can navigate or perform other actions
-        navigate(-1);
+        navigate(`/Kanbas/Courses/Assignments/${courseId}`);
       } else {
-        console.error("Failed to update assignment");
+        console.error("Failed to add assignment");
       }
     } catch (error) {
-      console.error("Error updating assignment:", error);
+      console.error("Error adding assignment:", error);
     }
   };
 
@@ -80,14 +83,14 @@ function AssignmentEditor() {
                         className="fa fa-bars text-danger"
                         aria-hidden="true"
                       ></i>
-                      {assignment?.course}
+                      {course?._id}
                     </li>
-                    <li
+                    {/* <li
                       className="breadcrumb-item active text-danger"
                       aria-current="page"
                     >
                       {assignment?.title}
-                    </li>
+                    </li> */}
                     <li className="breadcrumb-item active" aria-current="page">
                       ...
                     </li>
@@ -261,9 +264,9 @@ function AssignmentEditor() {
                             <button
                               type="button"
                               className="btn btn-danger float-end"
-                              onClick={updateAssignment}
+                              onClick={addAssignment}
                             >
-                              Update
+                              Save
                             </button>
                             <button
                               type="button"
@@ -288,4 +291,4 @@ function AssignmentEditor() {
   );
 }
 
-export default AssignmentEditor;
+export default AssignmentAddEditor;

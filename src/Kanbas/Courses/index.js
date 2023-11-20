@@ -1,35 +1,43 @@
-import React from "react";
-import {
-  useParams,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
-import JsonPre from "../../Labs/a3/JsonPre";
-import db from "../Database";
+import React, { useEffect, useState } from "react";
+import { useParams, Routes, Route } from "react-router-dom";
 import CourseNavigation from "./CourseNavigation";
-import Modules from "./Modules";
-import Home from "./Home";
-import Assignments from "./Assignments";
-import AssignmentEditor from "./Assignments/AssignmentEditor";
-import Grades from "./Grades";
+import Dashboard from "../Dashboard";
+// import Modules from "./Modules";
+// import Home from "./Home";
+// import Assignments from "./Assignments";
+// import AssignmentEditor from "./Assignments/AssignmentEditor";
+// import Grades from "./Grades";
 
-function Courses(props) {
+function Courses() {
   const { courseId } = useParams();
-  const { pathname } = useLocation();
-  const [empty, kanbas, courses, id, screen] = pathname.split("/");
+  const [course, setCourse] = useState(null);
+
+  const fetchCourse = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}`
+      );
+      const data = await response.json();
+      setCourse(data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourse();
+  }, []);
 
   return (
     <>
-      <div class="col-12 breadcrumb-col">
+      <div className="col-12 breadcrumb-col">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb custom-breadcrumb">
-            <li class="breadcrumb-item">
-              <i class="fa fa-bars" aria-hidden="true"></i>Home
+          <ol className="breadcrumb custom-breadcrumb">
+            <li className="breadcrumb-item">
+              <i className="fa fa-bars" aria-hidden="true"></i>Home
             </li>
             <li
-              class="breadcrumb-item active"
+              className="breadcrumb-item active"
               aria-current="page"
               style={{ paddingRight: "200px" }}
             >
@@ -50,20 +58,15 @@ function Courses(props) {
             }}
           >
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Home courses={props.courses} setCourses={props.setCourses} />
-                }
-              />
-              <Route path="Home" element={<Home />} />
+              <Route path="/Courses/Dashboard" element={<Dashboard />} />
+              {/* <Route path="Home" element={<Home />} />
               <Route path="Modules" element={<Modules />} />
               <Route path="Assignments" element={<Assignments />} />
               <Route
                 path="Assignments/:assignmentId"
                 element={<AssignmentEditor />}
               />
-              <Route path="Grades" element={<Grades />} />
+              <Route path="Grades" element={<Grades />} /> */}
             </Routes>
           </div>
         </div>

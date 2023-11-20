@@ -1,28 +1,123 @@
-import ModuleList from "./ModuleList";
-
 import { Link, useParams } from "react-router-dom";
-import db from "../../Database";
 import CourseNavigation from "../CourseNavigation";
+import { useState, useEffect } from "react";
 
-import { useSelector, useDispatch } from "react-redux";
-
-import {
-  addModule,
-  deleteModule,
-  updateModule,
-  setModule,
-} from "./modulesReducer";
-
-function Modules(props) {
+function Modules() {
   const { courseId } = useParams();
+  const [modules, setModules] = useState([]);
+  const [course, setCourse] = useState([]);
+  const [moduleData, setModuleData] = useState({
+    name: "New Module 123",
+    description: "New Description",
+  });
 
-  const modules = useSelector((state) => state.modulesReducer.modules);
-  const module = useSelector((state) => state.modulesReducer.module);
-  const dispatch = useDispatch();
+  const fetchCourse = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}`
+      );
+      const data = await response.json();
+      setCourse(data);
+    } catch (error) {
+      console.error("Error fetching course:", error);
+    }
+  };
 
-  const params = useParams();
+  const fetchModules = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}/modules`
+      );
+      const data = await response.json();
+      setModules(data);
+    } catch (error) {
+      console.error("Error fetching modules:", error);
+    }
+  };
 
-  console.log(modules);
+  const handleAddModule = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}/modules`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: moduleData.name,
+            description: moduleData.description,
+          }),
+        }
+      );
+      const newModule = await response.json();
+      setModules([...modules, newModule]);
+      // Clear the form after adding
+      setModuleData({
+        name: "",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error adding module:", error);
+    }
+  };
+
+  const handleEditModule = async (moduleId) => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/modules/${moduleId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(moduleData),
+        }
+      );
+      if (response.ok) {
+        // Update the local state after editing
+        setModules(
+          modules.map((module) =>
+            module._id === moduleId ? { ...module, ...moduleData } : module
+          )
+        );
+        // Clear the form after editing
+        setModuleData({
+          name: "",
+          description: "",
+        });
+      } else {
+        console.error("Error editing module:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error editing module:", error);
+    }
+  };
+
+  const handleDeleteModule = async (moduleId) => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/modules/${moduleId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        // Update the local state after deleting
+        setModules(modules.filter((module) => module._id !== moduleId));
+      } else {
+        console.error("Error deleting module:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting module:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchModules();
+    fetchCourse();
+  }, [courseId]);
+
   return (
     <div className="container">
       <div class="col-12 breadcrumb-col">
@@ -30,7 +125,7 @@ function Modules(props) {
           <ol class="breadcrumb custom-breadcrumb">
             <li class="breadcrumb-item">
               <i class="fa fa-bars" aria-hidden="true"></i>
-              {db.Courses.filter((item) => item._id == params.courseId)[0].name}
+              {course.name}
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               Modules
@@ -112,12 +207,7 @@ function Modules(props) {
                         <h3 className="home-list-heading mt-10px">
                           <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
                           <i className="fa-solid fa-ellipsis-vertical mr-5px"></i>{" "}
-                          {
-                            db.Courses.filter(
-                              (item) => item._id == params.courseId
-                            ).name
-                          }{" "}
-                          Modules{" "}
+                          {course.name} Modules{" "}
                         </h3>
                         <div className="mt-10px">
                           <span className="badge rounded-pill text-bg-light mr-10px">
@@ -141,27 +231,23 @@ function Modules(props) {
                             <div>
                               <input
                                 className="m-2"
-                                value={module.name}
+                                value={moduleData.name}
                                 onChange={(e) =>
-                                  dispatch(
-                                    setModule({
-                                      ...module,
-                                      name: e.target.value,
-                                    })
-                                  )
+                                  setModuleData({
+                                    ...moduleData,
+                                    name: e.target.value,
+                                  })
                                 }
                               />
                               <br />
                               <textarea
                                 className="m-2"
-                                value={module.description}
+                                value={moduleData.description}
                                 onChange={(e) =>
-                                  dispatch(
-                                    setModule({
-                                      ...module,
-                                      description: e.target.value,
-                                    })
-                                  )
+                                  setModuleData({
+                                    ...moduleData,
+                                    description: e.target.value,
+                                  })
                                 }
                               />
                             </div>
@@ -169,19 +255,15 @@ function Modules(props) {
                             <div className="buttons align-items-start">
                               <button
                                 type="button"
-                                class="btn btn-success "
-                                onClick={() =>
-                                  dispatch(
-                                    addModule({ ...module, course: courseId })
-                                  )
-                                }
+                                className="btn btn-success"
+                                onClick={handleAddModule}
                               >
                                 Add
                               </button>
                               <button
                                 type="button"
-                                class="btn btn-primary"
-                                onClick={() => dispatch(updateModule(module))}
+                                className="btn btn-primary"
+                                onClick={() => handleEditModule(moduleData._id)}
                               >
                                 Update
                               </button>
@@ -189,49 +271,45 @@ function Modules(props) {
                           </div>
                         </form>
                         <div>
-                          {modules
-                            .filter((item) => item.course == params.courseId)
-                            .map((module) => {
-                              return (
-                                <li className="list-group-item  pl-10px">
-                                  <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
-                                  <i className="fa-solid fa-ellipsis-vertical ml--5px mr-5px"></i>
-                                  <Link
-                                    to={`/Kanbas/Courses/${params.courseId}/assignment`}
-                                    className="assignments-list-heading"
+                          {modules.map((module) => (
+                            <>
+                              <li
+                                className=" pl-10px py-2"
+                                style={{ listStyleType: "none" }}
+                                key={module._id}
+                              >
+                                <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
+                                <i className="fa-solid fa-ellipsis-vertical ml--5px mr-5px"></i>
+                                {console.log(module)}
+                                <Link
+                                  to={`/Kanbas/Courses/${courseId}/assignment`}
+                                  className="assignments-list-heading"
+                                >
+                                  {module.name}
+                                </Link>
+                                <p>{module.description}</p>
+                                <p>{module._id}</p>
+                                <div className="buttons">
+                                  <button
+                                    className="btn btn-success"
+                                    onClick={() => setModuleData(module)}
                                   >
-                                    {module.name}
-                                  </Link>
-                                  <p>{module.description}</p>
-                                  <p>{module._id}</p>
-                                  <div className="buttons ">
-                                    <button
-                                      className="btn btn-success"
-                                      onClick={() =>
-                                        dispatch(setModule(module))
-                                      }
-                                    >
-                                      Edit
-                                    </button>
-
-                                    <button
-                                      type="button"
-                                      class="btn btn-danger"
-                                      onClick={() =>
-                                        dispatch(deleteModule(module._id))
-                                      }
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
-                                  {/* <i
-																		className="fa fa-ellipsis-v float-end mt-4px"
-																		aria-hidden="true"
-																	></i>
-																	<i className="fa-solid fa-circle-check mr-20px float-end mt-4px"></i> */}
-                                </li>
-                              );
-                            })}
+                                    Edit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={() =>
+                                      handleDeleteModule(module._id)
+                                    }
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </li>
+                              <hr className="m-0" />
+                            </>
+                          ))}
                         </div>
                       </div>
                     </ul>

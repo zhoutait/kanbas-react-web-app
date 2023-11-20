@@ -7,38 +7,23 @@ import Modules from "./Courses/Modules";
 import Assignments from "./Courses/Assignments";
 import Grades from "./Courses/Grades";
 import AssignmentEditor from "./Courses/Assignments/AssignmentEditor";
-import db from "./Database";
-import { useState } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
+import Home from "./Courses/Home";
+import AssignmentAddEditor from "./Courses/Assignments/AssignmentAddEditor";
 function Kanbas() {
-  const [courses, setCourses] = useState(db.Courses);
-  const [modules, setModules] = useState(db.Modules);
-
   return (
     <Provider store={store}>
       <div className="d-flex">
         <KanbasNavigation />
         <div>
           <Routes>
-            <Route
-              path="/"
-              element={<Dashboard courses={courses} setCourses={setCourses} />}
-            />
-            <Route
-              path="Courses/Home"
-              element={<Courses courses={courses} setCourses={setCourses} />}
-            />
-            <Route
-              path="/Courses"
-              element={<Courses courses={courses} setCourses={setCourses} />}
-            />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="Courses/Home" element={<Home />} />
+            <Route path="/Courses" element={<Courses />} />
             <Route path="Account" element={<Account />} />
-            <Route
-              path="Dashboard"
-              element={<Dashboard courses={courses} setCourses={setCourses} />}
-            />
-
+            <Route path="Dashboard" element={<Dashboard />} />
+            <Route path="Courses/:courseId" element={<Courses />} />
             <Route
               path="Courses/:courseId/assignment"
               element={<Assignments />}
@@ -47,22 +32,19 @@ function Kanbas() {
               path="Courses/Assignments"
               element={<Assignments type="all" />}
             />
-            <Route
-              path="Modules/:courseId/*"
-              element={<Modules modules={modules} setModules={setModules} />}
-            />
-            <Route path="Courses/Modules/:courseId/*" element={<Courses />} />
+            <Route path="Modules/:courseId/*" element={<Modules />} />
+            <Route path="Courses/Modules/:courseId/*" element={<Modules />} />
             <Route
               path="Courses/Modules/undefined"
               element={<Navigate to="/" />}
             />
             <Route
               path="Courses/Assignments/:assignmentId/:courseId"
-              element={<AssignmentEditor type={true} />}
+              element={<AssignmentEditor />}
             />
             <Route
-              path="Courses/AssignmentAdd/:moduleId"
-              element={<AssignmentEditor type={false} />}
+              path="Courses/AssignmentAdd/:courseId"
+              element={<AssignmentAddEditor />}
             />
             <Route
               path="Courses/Assignments/:courseId"

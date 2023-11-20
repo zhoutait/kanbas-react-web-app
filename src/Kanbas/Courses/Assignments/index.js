@@ -1,37 +1,75 @@
-import React from "react";
-import { useState } from "react";
-import "react-responsive-modal/styles.css";
-import { Modal } from "react-responsive-modal";
+import React, { useEffect, useState } from "react";
+import { Modal, Button } from "react-bootstrap";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import db from "../../Database";
 import CourseNavigation from "../CourseNavigation";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteAssignment, setAssignment } from "./assignmentsReducer";
-function Assignments({ type }) {
-  const [open, setOpen] = useState(false);
-  const [assignId, setAssignId] = useState();
+
+function Assignments() {
+  const { courseId } = useParams();
+  const [assignId, setAssignId] = useState(null);
+  const [assignments, setAssignments] = useState([]);
+  const [course, setCourse] = useState(null);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const onOpenModal = (id) => {
     setAssignId(id);
-    setOpen(true);
+    handleShow();
   };
-  const onCloseModal = () => setOpen(false);
 
   const Navigate = useNavigate();
-  const params = useParams();
-  const { courseId } = useParams();
-  const { assignmentId } = useParams();
-  const dispatch = useDispatch();
-  // const assignments = db.Assignments;
-  const assignments = useSelector(
-    (state) => state.assignmentReducer.assignments
-  );
-  const assignment = useSelector((state) => state.assignmentReducer.assignment);
-  // console.log(courseAssignments)
 
-  const courseAssignments = type
-    ? assignments.filter((assignment) => assignment.course === courseId)
-    : assignments;
-  console.log(assignments);
+  // Fetch assignments by courseId
+  const fetchAssignments = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/a5/assignment/course/${courseId}`
+      );
+      const data = await response.json();
+      setAssignments(data);
+    } catch (error) {
+      console.error("Error fetching assignments:", error);
+    }
+  };
+
+  // Fetch single course by courseId
+  const fetchCourse = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}`
+      );
+      const data = await response.json();
+      setCourse(data);
+    } catch (error) {
+      console.error("Error fetching course:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/assignments/${assignId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Successful deletion, you can navigate or perform other actions
+        handleClose();
+        fetchAssignments(); // Refresh the assignments after deletion
+      } else {
+        console.error("Failed to delete assignment");
+      }
+    } catch (error) {
+      console.error("Error deleting assignment:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+    fetchCourse();
+  }, [courseId]);
 
   return (
     <>
@@ -42,7 +80,7 @@ function Assignments({ type }) {
               <ol class="breadcrumb custom-breadcrumb">
                 <li class="breadcrumb-item">
                   <i class="fa fa-bars" aria-hidden="true"></i>
-                  {db.Courses.find((item) => item._id == courseId).name}
+                  {course?.name}
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                   Assignments
@@ -63,7 +101,7 @@ function Assignments({ type }) {
         </nav>
       </div>
       <div className="container row" style={{ width: "100vw" }}>
-        <CourseNavigation />
+        <CourseNavigation courseId={courseId} />
         <div className="col-10 mt-10px" style={{ width: "75%" }}>
           <div className="row">
             <div className="w-50">
@@ -88,7 +126,7 @@ function Assignments({ type }) {
                   aria-hidden="true"
                 ></i>
               </button>
-              <Link to={`/Kanbas/Courses/AssignmentAdd/${params.courseId}`}>
+              <Link to={`/Kanbas/Courses/AssignmentAdd/${courseId}`}>
                 <button
                   type="button"
                   className="btn btn-danger float-end mr-5px"
@@ -128,9 +166,8 @@ function Assignments({ type }) {
           </div>
           <div className="container">
             <ul className="r_distanceB list-group assignments-list">
-              {console.log(courseAssignments)}
-              {courseAssignments.map((assignment) => (
-                <li className=" list-group-item d-flex justify-content-between">
+              {assignments.map((assignment) => (
+                <li className=" list-group-item list-group-item-assignment d-flex justify-content-between">
                   <div className="assignments-list-single-left-content d-flex">
                     <div className="d-flex align-items-center mr-20px">
                       <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
@@ -144,7 +181,7 @@ function Assignments({ type }) {
                       <Link
                         key={assignment._id}
                         to={`/Kanbas/Courses/Assignments/${assignment._id}/${assignment.course}`}
-                        className="list-group-item"
+                        className="list-group-item list-group-item-assignment"
                       >
                         {assignment.title}
                       </Link>{" "}
@@ -168,7 +205,7 @@ function Assignments({ type }) {
 											> */}
                       <button
                         type="button"
-                        class="btn btn-success "
+                        class="btn btn-success"
                         onClick={() => {
                           Navigate(
                             `/Kanbas/Courses/Assignments/${assignment._id}/${assignment.course}`
@@ -177,37 +214,16 @@ function Assignments({ type }) {
                       >
                         Edit
                       </button>
-                      {/* </Link> */}
+                      <span className="p-1"></span>
                       <button
                         type="button"
                         class="btn btn-primary"
                         onClick={() => {
-                          // dispatch(setAssignment(assignment));
                           onOpenModal(assignment._id);
                         }}
                       >
                         Delete
                       </button>
-                      <Modal open={open} onClose={onCloseModal} center>
-                        <h2>Are You Sure Want to Delete</h2>
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          onClick={() => onCloseModal()}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          onClick={() => {
-                            dispatch(deleteAssignment(assignId));
-                            onCloseModal();
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </Modal>
                     </div>
                   </div>
                 </li>
@@ -216,6 +232,19 @@ function Assignments({ type }) {
           </div>
         </div>
       </div>
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Are You Sure Want to Delete?</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleDelete}>
+            Delete
+          </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

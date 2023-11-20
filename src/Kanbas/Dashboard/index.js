@@ -1,8 +1,8 @@
-import db from "../Database";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-function Dashboard(props) {
-  const Fetchcourses = props.courses;
+
+function Dashboard() {
+  const [courses, setCourses] = useState([]);
   const [course, setCourse] = useState({
     name: "New Course",
     number: "New Number",
@@ -10,35 +10,106 @@ function Dashboard(props) {
     endDate: "2023-12-15",
   });
 
-  const addNewCourse = () => {
-    props.setCourses([
-      ...Fetchcourses,
-      { ...course, _id: new Date().getTime() },
-    ]);
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch(
+        "https://kanbas-node-server-app-zinh.onrender.com/api/courses"
+      );
+      const data = await response.json();
+      setCourses(data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
   };
-  const deleteCourse = (courseId) => {
-    props.setCourses(Fetchcourses.filter((course) => course._id !== courseId));
+
+  const addNewCourse = async () => {
+    try {
+      const response = await fetch(
+        "https://kanbas-node-server-app-zinh.onrender.com/api/courses",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(course),
+        }
+      );
+
+      if (response.ok) {
+        // Successful addition, fetch courses again
+        fetchCourses();
+        setCourse({
+          name: "New Course",
+          number: "New Number",
+          startDate: "2023-09-10",
+          endDate: "2023-12-15",
+        });
+      } else {
+        console.error("Failed to add course");
+      }
+    } catch (error) {
+      console.error("Error adding course:", error);
+    }
+  };
+
+  const deleteCourse = async (courseId) => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Successful deletion, fetch courses again
+        fetchCourses();
+      } else {
+        console.error("Failed to delete course");
+      }
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
   };
 
   const editCourse = (courseId) => {
-    setCourse(Fetchcourses.filter((course) => course._id == courseId)[0]);
+    setCourse(courses.find((course) => course._id === courseId));
   };
 
-  const updateCourse = (courseId) => {
-    props.setCourses(
-      Fetchcourses.map((c) => {
-        if (c._id === courseId) {
-          return course;
-        } else {
-          return c;
+  const updateCourse = async (courseId) => {
+    try {
+      const response = await fetch(
+        `https://kanbas-node-server-app-zinh.onrender.com/api/courses/${courseId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(course),
         }
-      })
-    );
-  };
-  console.log(Fetchcourses);
+      );
 
-  // const courses = db.Courses;
-  // console.log(courses);
+      if (response.ok) {
+        // Successful update, fetch courses again
+        fetchCourses();
+        setCourse({
+          name: "New Course",
+          number: "New Number",
+          startDate: "2023-09-10",
+          endDate: "2023-12-15",
+        });
+      } else {
+        console.error("Failed to update course");
+      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
@@ -46,7 +117,7 @@ function Dashboard(props) {
           <h1 className="mt-10px">Dashboard</h1>
           <hr />
           <div className="ml-20px">
-            <h2>Published Courses ({Fetchcourses.length})</h2>
+            <h2>Published Courses ({courses.length})</h2>
             <hr />
 
             <div className="CRUDContainer border">
@@ -86,19 +157,15 @@ function Dashboard(props) {
                   <div className="buttons">
                     <button
                       type="button"
-                      class="btn btn-success"
-                      onClick={() => {
-                        addNewCourse();
-                      }}
+                      className="btn btn-success"
+                      onClick={addNewCourse}
                     >
                       Add
                     </button>
                     <button
                       type="button"
-                      class="btn btn-primary"
-                      onClick={() => {
-                        updateCourse(course._id);
-                      }}
+                      className="btn btn-primary"
+                      onClick={() => updateCourse(course._id)}
                     >
                       Update
                     </button>
@@ -106,58 +173,49 @@ function Dashboard(props) {
                 </div>
               </form>
               <div>
-                {Fetchcourses.toReversed().map((course, index) => {
-                  return (
-                    <>
-                      <div className="crud-action border p-2">
-                        <div className="d-flex align-items-center">
-                          <span>{course.name}</span>
-                          <div className="buttons ">
-                            <button
-                              type="button"
-                              class="btn btn-warning"
-                              onClick={() => {
-                                editCourse(course._id);
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              onClick={() => {
-                                deleteCourse(course._id);
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </div>
+                {courses.map((course) => (
+                  <div key={course._id} className="crud-action border p-2">
+                    <div className="d-flex align-items-center">
+                      <span>{course.name}</span>
+                      <div className="buttons ">
+                        <button
+                          type="button"
+                          className="btn btn-warning"
+                          onClick={() => editCourse(course._id)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => deleteCourse(course._id)}
+                        >
+                          Delete
+                        </button>
                       </div>
-                    </>
-                  );
-                })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="row" style={{ width: "80vw" }}>
-              {Fetchcourses.toReversed().map((course, index) => (
-                <div className="col-sm-6 col-md-4 col-lg-3">
+              {courses.map((course) => (
+                <div key={course._id} className="col-sm-6 col-md-4 col-lg-3">
                   <div className="card m-2 dashboad-card">
                     <div className="card-image card-dark-blue">
                       <i className="fa-solid fa-ellipsis-vertical"></i>
                     </div>
                     <div className="card-body">
-                      <h5 class="card-title">{course.name}</h5>
+                      <h5 className="card-title">{course.name}</h5>
 
                       <Link
-                        key={course._id}
-                        to="/Kanbas/Courses"
+                        to={`/Kanbas/Courses/Modules/${course._id}`}
                         className="btn btn-primary"
                       >
                         {course.name}
                       </Link>
-                      <p class="card-text">
+                      <p className="card-text">
                         {course._id +
                           " " +
                           course.startDate +

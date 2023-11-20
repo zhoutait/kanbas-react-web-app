@@ -3,6 +3,7 @@ import Nav from "../nav";
 import Assignment3 from "./a3";
 import HelloWorld from "./a3/HelloWorld";
 import Assignment4 from "./a4";
+import Assignment5 from "./a5";
 import store from "./store";
 import { Provider } from "react-redux";
 
@@ -36,6 +37,16 @@ function Labs() {
             </div>
             <div className="nav h4">
               <Link
+                to="/Labs/a5"
+                className={`nav-link ${
+                  pathname.includes("a5") ? "active" : ""
+                }text-primary`}
+              >
+                Assignment 5
+              </Link>
+            </div>
+            <div className="nav h4">
+              <Link
                 to="/hello"
                 className={`nav-link ${
                   pathname.includes("hello") ? "active" : ""
@@ -61,6 +72,7 @@ function Labs() {
           {<Route path="/" element={<Navigate to="a3" />} />}
           <Route path="a3/*" element={<Assignment3 />} />
           <Route path="a4/*" element={<Assignment4 />} />
+          <Route path="a5/*" element={<Assignment5 />} />
         </Routes>
         {}
       </div>

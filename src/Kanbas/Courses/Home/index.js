@@ -1,8 +1,23 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import db from "../../Database";
-function Home(props) {
-  const courses = props.courses;
-  console.log(props.courses);
+function Home() {
+  const [courses, setCourses] = useState([]);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch(
+        "https://kanbas-node-server-app-zinh.onrender.com/api/courses"
+      );
+      const data = await response.json();
+      setCourses(data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
   return (
     <>
       <div className="row">
@@ -94,24 +109,26 @@ function Home(props) {
                           ></i>
                         </div>
                       </li>
-
                       {courses.toReversed().map((course) => {
                         return (
-                          <li className="list-group-item  pl-10px">
-                            <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
-                            <i className="fa-solid fa-ellipsis-vertical ml--5px mr-5px"></i>
-                            <Link
-                              to={`/Kanbas/Modules/${course._id}`}
-                              className="assignments-list-heading"
-                            >
-                              {course.name}
-                            </Link>
-                            <i
-                              className="fa fa-ellipsis-v float-end mt-4px"
-                              aria-hidden="true"
-                            ></i>
-                            <i className="fa-solid fa-circle-check mr-20px float-end mt-4px"></i>
-                          </li>
+                          <>
+                            <li className="pl-10px p-2">
+                              <i className="fa-solid fa-ellipsis-vertical mr-2px"></i>
+                              <i className="fa-solid fa-ellipsis-vertical ml--5px mr-5px"></i>
+                              <Link
+                                to={`/Kanbas/Modules/${course._id}`}
+                                className="assignments-list-heading"
+                              >
+                                {course.name}
+                              </Link>
+                              <i
+                                className="fa fa-ellipsis-v float-end mt-4px"
+                                aria-hidden="true"
+                              ></i>
+                              <i className="fa-solid fa-circle-check mr-20px float-end mt-4px"></i>
+                            </li>
+                            <hr className="m-0" />
+                          </>
                         );
                       })}
                     </ul>
