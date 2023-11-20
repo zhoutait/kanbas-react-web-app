@@ -37,7 +37,7 @@ function Dashboard() {
 
       if (response.ok) {
         // Successful addition, fetch courses again
-        fetchCourses();
+        await fetchCourses();
         setCourse({
           name: "New Course",
           number: "New Number",
