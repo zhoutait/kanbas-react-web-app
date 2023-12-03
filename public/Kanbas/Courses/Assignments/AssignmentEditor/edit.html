@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/lib/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/Kanbas/KanbasNavigation/index.css"/>
+    <link rel="stylesheet" href="/Kanbas/Courses/CourseNavigation/index.css"/>
+    <link rel="stylesheet" href="/style.css"/>
+    <link rel="stylesheet" href="/Kanbas/AccountNavigation/index.css"/>
+  </head>
+  <body style="overflow-x: hidden;">
+    <div>
+      <div class="row">
+        <div class="col-sm-2 col-md-1 col-3">
+          <div style="height: 100%;">
+            <ul class="wd-kanbas-navigation" style="height: 100%;">
+              <li>
+                <a href="/Kanbas/AccountNavigation/index.html">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                    Account
+                </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/Dashboard/index.html">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    Dashboard
+                  </a>
+              </li>
+              <li class="wd-active">
+                <a href="/Kanbas/Courses/Home/home.html">
+                  <i class="fa fa-book" aria-hidden="true"></i>
+                  Courses
+                </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/Calendar/index.html">
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                  Calendar
+                  </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/Inbox/index.html">
+                      <i class="fa fa-inbox" aria-hidden="true"></i>
+                      Inbox
+                  </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/History/index.html">
+                      <i class="fa fa-history" aria-hidden="true"></i>
+                      History
+                  </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/Studio/index.html">
+                      <i class="fa fa-desktop" aria-hidden="true"></i>
+                      Studio
+                  </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/Commons/index.html">
+                      <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                  Commons
+                  </a>
+              </li>
+              <li>
+                  <a href="/Kanbas/Help/index.html">
+                      <i class="fa fa-question-circle" aria-hidden="true"></i>
+                      <br/>
+                      Help  
+                  </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-10 col-md-11 col-9">
+          <div class="row">
+            <div class="col-12">               
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="pt-15">     
+                  <ol class="breadcrumb custom-breadcrumb">
+                      <li class="breadcrumb-item text-danger"><i class="fa fa-bars text-danger" aria-hidden="true"></i>
+                          CS5610.11744.202310</li>
+                      <li class="breadcrumb-item active text-danger" aria-current="page">Assignments</li>
+                      <li class="breadcrumb-item active" aria-current="page">A1 - ENV + ...</li>
+                  </ol>
+                <hr class="mt-10px"/>  
+              </nav>
+          </div>
+            <div class="col-md-2 d-md-block d-none">
+              <div>      
+                <p class="assignment-edit-second-bar-small-heading">202310_2_Fall 2022 Semester....</p>
+                <ul class="wd-course-navigation d-none d-md-block ml-0">
+                  <li><a href="/Kanbas/Courses/Home/home.html">Home</a></li>
+                  <li><a href="/Kanbas/Courses/Modules/index.html">Modules</a></li>
+                  <li><a href="#">Piazza</a></li> 
+                  <li><a href="#">Zoom Meetings</a></li>  
+                  <li class="wd-active"><a href="/Kanbas/Courses/Assignments/index.html">Assignments</a></li>
+                  <li><a href="#">Quizzes</a></li>  
+                  <li><a href="/Kanbas/Courses/Grades/grades.html">Grades</a></li> 
+                  <li><a href="#">People</a></li>  
+                  <li><a href="#">Panopto Video</a></li> 
+                  <li><a href="#">Discussion</a></li> 
+                  <li><a href="#">Announcements</a></li> 
+                  <li><a href="#">Pages</a></li> 
+                  <li><a href="#">Files</a></li> 
+                  <li><a href="#">Rubrics</a></li> 
+                  <li><a href="#">Outcomes</a></li> 
+                  <li><a href="#">Collaborations</a></li> 
+                  <li><a href="#">Syllabus</a></li> 
+                  <li><a href="/Kanbas/Courses/Settings/index.html">Settings</a></li> 
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-10 col-12 course-assignment-content-col">
+              <div class="row">
+                <div class="mt-20px">
+                    <button type="button" class="btn btn-light btn-outline-dark float-end mr-5px" style="height:38px;border: none; background-color: #dddddd !important;">
+                        <i class="fa fa-ellipsis-v float-end" aria-hidden="true" style="color: #4e5154;"></i>
+                    </button>
+                    <p class="text-success float-end mr-5px font-weight-bold mt-5px mr-15px">
+                      <i class="fa-solid fa-circle-check"></i> Published
+                    </p>
+                </div>
+              </div>
+              <div>
+                
+                <br/>
+                <hr class="mt-0"/>
+                <h3 class="mt-15px">Assignment Name</h3>
+                <form action="/Kanbas/Courses/Assignments/index.html" class="mr-10px">
+                  
+                  <input type="text" id="disabledTextInput" class="form-control" placeholder="A1 - ENV + HTML">
+                  <br/>
+                  <div class="form-floating">
+                    <textarea class="form-control" placeholder="" id="floatingTextarea2" style="height: 100px">This assignment describes how to install the development environment for creating and working with Web applications we will be developing this semester. We will add new content every week, pushing the code to a GitHub source repository, and tdeploying the content to a remote server hosted on Netlify.</textarea>
+                    <label for="floatingTextarea2"></label>
+                </div>
+                  
+                  
+                <div class="assign-edit-form-content-points-to-sumb-type mx-auto mt-30px">
+                  
+                  <div class="mb-3 row">
+                    <div class="col-lg-3 col-sm-4 assign-edit-list-item-label-col">  
+                      <label for="inputPassword" class="col-form-label text-right">Point</label>
+                    </div>
+                    <div class="col-lg-9 col-sm-8">
+                      <input type="text" class="form-control" id="inputPassword">
+                    </div>
+                  </div>
+
+                  <div class="mb-3 row">
+                    <div class="col-lg-3 col-sm-4 assign-edit-list-item-label-col">  
+                      <label for="inputPassword" class="col-form-label text-right">Assignment Group</label>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 ">
+                      <select class="form-select" aria-label="Default select example">
+                        <option selected>ASSIGNMENTS</option>
+                      </select> 
+                    </div>
+                  </div>
+
+                  <div class="mb-3 row">
+                    <div class="col-lg-3 col-sm-4 assign-edit-list-item-label-col">  
+                      <label for="inputPassword" class="col-form-label text-right">Display Grade as</label>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 ">
+                      <select class="form-select" aria-label="Default select example">
+                        <option selected>Percentage</option>
+                      </select> 
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3 assign-edit-list-item-label-col">
+                  </div>
+                    <div class="col-sm-9">
+                      
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Do not count this assignment towards the final grade
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3 row mt-30px">
+                    <div class="col-lg-3 col-sm-4 assign-edit-list-item-label-col">  
+                      <label for="inputPassword" class="col-form-label text-right">Submission Type</label>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 ">
+                      <div class="assign-edit-submission-type-content-wrapper p-15">
+                        <select class="form-select" aria-label="Default select example" style="width: 250px;max-width: 100%;">
+                          <option selected>Online</option>
+                        </select> 
+                        <p class="mt-20px"><b>Online Entry Option</b></p>
+
+                        <div class="form-check mb-10px">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                          <label class="form-check-label" for="flexCheckDefault">
+                              Text Entry
+                          </label>
+                        </div>
+                        <div class="form-check mb-10px">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                          <label class="form-check-label" for="flexCheckDefault">
+                              Website URL
+                          </label>
+                        </div>
+                        <div class="form-check mb-10px">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                          <label class="form-check-label" for="flexCheckDefault">
+                              Media Recordings
+                          </label>
+                        </div>
+                        <div class="form-check mb-10px">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                          <label class="form-check-label" for="flexCheckDefault">
+                              Student Annotation
+                          </label>
+                        </div>
+                        <div class="form-check mb-10px">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                          <label class="form-check-label" for="flexCheckDefault">
+                              File Uploads
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 row mt-30px">
+                    <div class="col-lg-3 col-sm-4 assign-edit-list-item-label-col">  
+                      <label for="inputPassword" class="col-form-label text-right">Assign</label>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 ">
+                      <div class="assign-edit-submission-type-content-wrapper p-15">
+                        <p class="mb-10px"><b>Assign to</b></p>
+                        <ul class="assign-edit-gradres-tags">
+                          <li class="assign-edit-gradres-first-tag d-flex align-items-center"><p class="mt-0 mb-0">Everyone </p><i class="fa fa-times ml-4" aria-hidden="true"></i></li>
+                          <li><input type="text" class="form-control" id="inputPassword" style="width: 150px;max-width: 150px;"></li>  
+                        </ul>
+                        <p class="mb-0"><b>Due</b></p>
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="Sep 18, 2023, 11:59 PM">
+                          <span class="input-group-text"><i class="fa fa-calendar home-fa-calendar-icon float-end  mr-6px" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <p class="mt-10px mb-0"><b>Available from</b></p>
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Sep 6, 2023, 11:59 PM">
+                              <span class="input-group-text"><i class="fa fa-calendar home-fa-calendar-icon float-end  mr-6px" aria-hidden="true"></i></span>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <p class="mt-10px mb-0"><b>Until</b></p>
+                            <div class="input-group">
+                              <input type="text" class="form-control">
+                              <span class="input-group-text"><i class="fa fa-calendar home-fa-calendar-icon float-end  mr-6px" aria-hidden="true"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-30px">
+                        <div class="p-3 mb-2 text-dark text-center" style="background-color: #dddddd !important;border-radius: 0 0 5px 5px"><i class="fa fa-plus mr-5px;" aria-hidden="true"></i>Add</div>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="form-check ">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                      <label class="form-check-label" for="flexCheckDefault">
+                          Notify user that this content has changed
+                      </label>
+                      <button type="button" class="btn btn-danger float-end">Save</button>
+                      <button type="button" class="btn btn-light float-end mr-5px">Cancel</button>
+                    </div>
+                    <hr class="mt-10px">
+                  </div>                
+                </form>              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://kit.fontawesome.com/90ba9d8fb8.js" crossorigin="anonymous"></script>
+</body>
+</html>
+
