@@ -61,8 +61,7 @@ function Account() {
           <input
             type="date"
             className="form-control"
-            // defaultValue={account?.dob ? account?.dob.substring(0, 10) : ""}
-            value={account.dob.split("T")[0]}
+            value={account.dob?.split("T")[0]}
             onChange={(e) => setAccount({ ...account, dob: e.target.value })}
           />
           <input
